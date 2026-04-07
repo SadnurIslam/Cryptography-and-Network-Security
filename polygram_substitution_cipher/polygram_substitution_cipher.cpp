@@ -45,6 +45,7 @@ int main(){
         string str = cipher.substr(n/3*3);
         msg+=ctp[str];
     }
+    
     cout<<endl<<"Plain text: "<<endl<<msg<<endl;
 
 }

@@ -63,4 +63,5 @@ int main(){
         fout<<vs[i]<<" "<<vv[r]<<endl;
         vv.erase(vv.begin()+r);
     }
+    
 }
