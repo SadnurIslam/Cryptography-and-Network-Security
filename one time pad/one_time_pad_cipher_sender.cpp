@@ -1,3 +1,13 @@
+/*
+workflow:
+1. Randomly generate a pad sequence and store it in two file one for sender and one for receiver.
+2. Sender will read the pad sequence and the message to be sent and generate the cipher text and store it in a file.
+3. Sender will also update the pad sequence by erasing the used part and store it back in the file.
+4. Receiver will read the pad sequence and the cipher text and generate the plain text and output it.
+5. Receiver will also update the pad sequence by erasing the used part and store it back in the file.
+*/
+
+
 #include<bits/stdc++.h>
 using namespace std;
 
