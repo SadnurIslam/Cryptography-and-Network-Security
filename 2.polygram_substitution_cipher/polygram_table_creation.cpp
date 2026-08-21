@@ -26,8 +26,10 @@ int main(){
         //     vv.erase(vv.begin()+r);
         // }
 
+    
+    mt19937 rng(time(0));
+    shuffle(vv.begin(), vv.end(), rng);
     int n = vs.size();
-    shuffle(vv.begin(),vv.end(),default_random_engine(rand()));
     for(int i=0;i<n;i++){
         fout<<vs[i]<<" "<<vv[i]<<endl;
     }
@@ -46,7 +48,7 @@ int main(){
     }
     
     n = vs.size();
-    shuffle(vv.begin(),vv.end(),default_random_engine(rand()));
+    shuffle(vv.begin(), vv.end(), rng);
     for(int i=0;i<n;i++){
         fout<<vs[i]<<" "<<vv[i]<<endl;
     }
@@ -62,7 +64,7 @@ int main(){
     }
     
     n = vs.size();
-    shuffle(vv.begin(),vv.end(),default_random_engine(rand()));
+    shuffle(vv.begin(), vv.end(), rng);
     for(int i=0;i<n;i++){
         fout<<vs[i]<<" "<<vv[i]<<endl;
     }

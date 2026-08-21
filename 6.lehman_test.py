@@ -1,6 +1,28 @@
 '''
-1. use python when we need big integer like 512 bit number
-2. use python bcz it support built in pow(a,b,mod)
+Step 1:
+Input an integer p and number of iterations k (usually 20).
+
+Step 2:
+If p < 2 → Composite
+If p == 2 → Prime
+If p is even → Composite
+
+Step 3:
+Repeat k times:
+
+    a. Choose a random integer a such that
+       1 < a < p - 1
+
+    b. Compute
+       r = a^((p-1)/2) mod p
+       (Use: pow(a, (p-1)//2, p))
+
+    c. If r is neither 1 nor (p-1),
+       return Composite.
+
+Step 4:
+If all iterations pass,
+return Probably Prime.
 '''
 
 import random

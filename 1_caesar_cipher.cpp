@@ -5,6 +5,7 @@ int main(){
     cout<<"Plain text: "<<endl;
     string msg;
     cin>>msg;
+    // getline(cin,msg);
 
     //encryption
     int n = msg.size();

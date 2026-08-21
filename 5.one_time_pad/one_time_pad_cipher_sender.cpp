@@ -20,7 +20,8 @@ int main(){
     fin>>pad;
     fin.close();
     cout<<"Plain text: "<<endl;
-    cin>>msg;
+    // cin>>msg;
+    msg = "zdgxfbvrstsetfsswtet";
 
     int n = msg.size();
     for(int i=0;i<n;i++){
