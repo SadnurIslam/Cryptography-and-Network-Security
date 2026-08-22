@@ -1,4 +1,48 @@
-# write in python when need to work with big integer like 512 bit number
+# MILLER–RABIN PRIMALITY TEST ALGORITHM
+
+# Step 1:
+# Input an odd integer p and number of iterations k.
+
+# Step 2:
+# Handle special cases:
+#     • If p < 2 → Composite
+#     • If p = 2 or 3 → Prime
+#     • If p is even → Composite
+
+# Step 3:
+# Write p − 1 as:
+
+#     p − 1 = 2^b × m
+
+# where m is odd.
+
+# Step 4:
+# Repeat k times:
+
+#     a. Choose a random integer a such that
+#        2 ≤ a ≤ p − 2
+
+#     b. Compute
+#        z = a^m mod p
+
+#     c. If z = 1 or z = p − 1,
+#        go to the next iteration.
+
+#     d. Repeat (b − 1) times:
+#          z = z² mod p
+
+#          If z = p − 1:
+#              Pass this iteration.
+
+#          If z = 1:
+#              Return Composite.
+
+#     e. If p − 1 is never obtained,
+#        Return Composite.
+
+# Step 5:
+# If all iterations pass,
+# Return Probably Prime.
 
 
 import random
