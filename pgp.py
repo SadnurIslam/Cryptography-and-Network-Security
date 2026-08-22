@@ -1,6 +1,7 @@
 import hashlib
 import random
 import math
+import zlib
 
 # ==========================================================
 # RSA KEY GENERATION
@@ -32,11 +33,11 @@ def verify(message, signature):
     recovered = pow(signature, e, n)
     return (h % n) == recovered
 
-def xor_encrypt(text, key):
-    return [ord(ch) ^ key for ch in text]
+def xor_encrypt(data, key):
+    return [b ^ key for b in data]
 
 def xor_decrypt(cipher, key):
-    return "".join(chr(c ^ key) for c in cipher)
+    return bytes([c ^ key for c in cipher])
 
 # ==========================================================
 # 12(a) / 13(a)
@@ -50,18 +51,24 @@ def authentication():
 
     signature = sign(msg)
 
-    print("\nMessage   :", msg)
-    print("Signature :", signature)
+    packet = str(signature) + "|" + msg
+    compressed = zlib.compress(packet.encode())
 
-    if verify(msg, signature):
-        print("Authentication Successful")
+    print("Compressed Packet:", compressed.hex())
+
+    # Receiver
+    recovered = zlib.decompress(compressed).decode()
+    sign_text, message = recovered.split("|", 1)
+
+    if verify(message, int(sign_text)):
+        print("\nAuthentication Successful")
+        print("Message:", message)
     else:
         print("Authentication Failed")
 
 # ==========================================================
 # 12(b)
 # CONFIDENTIALITY FOR TRANSMITTING DATA
-# (Encrypt session key + transmit ciphertext)
 # ==========================================================
 
 def confidentiality_transmit():
@@ -71,25 +78,26 @@ def confidentiality_transmit():
 
     session_key = random.randint(1, 255)
 
-    cipher = xor_encrypt(msg, session_key)
+    compressed = zlib.compress(msg.encode())
+
+    cipher = xor_encrypt(compressed, session_key)
 
     encrypted_key = pow(session_key, e, n)
 
     print("\nTransmit:")
     print("Encrypted Session Key:", encrypted_key)
-    print("Cipher Text:", cipher)
-    print("Cipher Text:", " ".join(map(str,cipher)))
+    print("Cipher Text:", " ".join(map(str, cipher)))
 
     # Receiver
     recovered_key = pow(encrypted_key, d, n)
     plain = xor_decrypt(cipher, recovered_key)
+    plain = zlib.decompress(plain).decode()
 
     print("\nReceiver Plain Text:", plain)
 
 # ==========================================================
 # 13(b) / 14(a)
 # CONFIDENTIALITY FOR STORING DATA
-# (Store encrypted file locally)
 # ==========================================================
 
 def confidentiality_store():
@@ -99,11 +107,11 @@ def confidentiality_store():
 
     session_key = random.randint(1, 255)
 
-    cipher = xor_encrypt(msg, session_key)
+    compressed = zlib.compress(msg.encode())
+    cipher = xor_encrypt(compressed, session_key)
 
     encrypted_key = pow(session_key, e, n)
 
-    # Store into file
     with open("encrypted_data.txt", "w") as f:
         f.write(str(encrypted_key) + "\n")
         f.write(" ".join(map(str, cipher)))
@@ -117,6 +125,7 @@ def confidentiality_store():
 
     recovered_key = pow(encrypted_key, d, n)
     plain = xor_decrypt(cipher, recovered_key)
+    plain = zlib.decompress(plain).decode()
 
     print("Recovered Plain Text:", plain)
 
@@ -130,28 +139,29 @@ def auth_and_confidentiality():
 
     msg = input("Enter message: ")
 
-    # Authentication
     signature = sign(msg)
 
-    # Combine message and signature
-    data = msg + "|" + str(signature)
+    data = str(signature) + "|" + msg
 
-    # Session key
+    compressed = zlib.compress(data.encode())
+
     session_key = random.randint(1, 255)
 
-    cipher = xor_encrypt(data, session_key)
+    cipher = xor_encrypt(compressed, session_key)
 
     encrypted_key = pow(session_key, e, n)
 
     print("\nTransmit:")
     print("Encrypted Session Key:", encrypted_key)
-    print("Cipher:", cipher)
+    print("Cipher:", " ".join(map(str, cipher)))
 
     # Receiver
     recovered_key = pow(encrypted_key, d, n)
-    recovered = xor_decrypt(cipher, recovered_key)
 
-    message, sign_text = recovered.rsplit("|", 1)
+    recovered = xor_decrypt(cipher, recovered_key)
+    recovered = zlib.decompress(recovered).decode()
+
+    sign_text, message = recovered.split("|", 1)
 
     if verify(message, int(sign_text)):
         print("\nVerified Message:", message)
@@ -161,13 +171,13 @@ def auth_and_confidentiality():
 
 # ==========================================================
 # MAIN
-# Uncomment ONLY the function required in the exam.
+# Uncomment ONLY the required function in exam.
 # ==========================================================
 
 authentication()                 # Q12(a), Q13(a)
 
-confidentiality_transmit()       # Q12(b)
+# confidentiality_transmit()     # Q12(b)
 
-# confidentiality_store()          # Q13(b), Q14(a)
+# confidentiality_store()        # Q13(b), Q14(a)
 
-# auth_and_confidentiality()         # Q14(b)
+# auth_and_confidentiality()     # Q14(b)
