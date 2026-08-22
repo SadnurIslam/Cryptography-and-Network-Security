@@ -174,10 +174,10 @@ def auth_and_confidentiality():
 # Uncomment ONLY the required function in exam.
 # ==========================================================
 
-authentication()                 # Q12(a), Q13(a)
+# authentication()                 # Q12(a), Q13(a)
 
 # confidentiality_transmit()     # Q12(b)
 
 # confidentiality_store()        # Q13(b), Q14(a)
 
-# auth_and_confidentiality()     # Q14(b)
+auth_and_confidentiality()     # Q14(b)
