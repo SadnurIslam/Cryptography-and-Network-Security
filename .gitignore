@@ -1,4 +1,5 @@
 *.exe
 *.o
+*.txt
 practice.py
 practice.cpp
